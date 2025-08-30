@@ -7,7 +7,7 @@ from typing import List, Optional
 
 @dataclass
 class Job:
-    """งานที่ต้องผลิต"""
+    """งานที่ต้องผลิต - Enhanced with quality tracking"""
     id: int
     batch_size: int
     arrival_time: float
@@ -16,6 +16,16 @@ class Job:
     start_time: Optional[float] = None
     completion_time: Optional[float] = None
     priority: int = 1  # 1=Normal, 2=High, 3=Critical
+    
+    # Quality attributes
+    is_defective: bool = False
+    needs_rework: bool = False
+    rework_count: int = 0
+    
+    # Cost tracking
+    material_cost: float = 0.0
+    processing_cost: float = 0.0
+    total_cost: float = 0.0
     
     def get_priority_weight(self) -> float:
         """คำนวณน้ำหนักความสำคัญ"""

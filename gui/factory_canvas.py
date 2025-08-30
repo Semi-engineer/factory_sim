@@ -151,6 +151,16 @@ class ModernFactoryCanvas:
             tags="machine"
         )
         
+        # Production line indicator (if part of a line)
+        if hasattr(machine, 'production_line') and machine.production_line:
+            self.canvas.create_text(
+                x1 + 60, y1 + 65,
+                text=f"Line: {machine.production_line}",
+                font=("Segoe UI", 8),
+                fill="#007bff",
+                tags="machine"
+            )
+        
         # Working indicator
         if machine.is_working:
             self.canvas.create_oval(
@@ -170,9 +180,13 @@ class ModernFactoryCanvas:
     
     def update_display(self):
         """อัปเดตการแสดงผล - Optimized"""
-        # Clear only machine objects, keep grid
+        # Clear only machine objects
         self.canvas.delete("machine")
         self.canvas.delete("selection")
+        self.canvas.delete("production_line")
+        
+        # Draw production lines first
+        self.draw_production_lines()
         
         # Draw machines
         for machine in self.factory.machines.values():
@@ -192,6 +206,52 @@ class ModernFactoryCanvas:
                 x1 - (i+1)*2, y1 - (i+1)*2, x2 + (i+1)*2, y2 + (i+1)*2,
                 outline="#007bff", width=2, fill="",
                 tags="selection"
+            )
+    
+    def draw_production_lines(self):
+        """Draw production line connections"""
+        for line in self.factory.production_lines.values():
+            self.draw_production_line(line)
+    
+    def draw_production_line(self, line):
+        """Draw a single production line with connections"""
+        if len(line.machines) < 2:
+            return
+        
+        # Draw connections between machines
+        for i in range(len(line.machines) - 1):
+            machine1 = line.machines[i]
+            machine2 = line.machines[i + 1]
+            
+            # Get connection points
+            x1, y1 = machine1.x + 60, machine1.y  # Right side of machine1
+            x2, y2 = machine2.x - 60, machine2.y  # Left side of machine2
+            
+            # Draw connection line
+            self.canvas.create_line(
+                x1, y1, x2, y2,
+                fill="#007bff", width=3,
+                arrow=tk.LAST, arrowshape=(16, 20, 6),
+                tags="production_line"
+            )
+            
+            # Add flow indicator (animated dot would be nice)
+            mid_x, mid_y = (x1 + x2) / 2, (y1 + y2) / 2
+            self.canvas.create_oval(
+                mid_x - 3, mid_y - 3, mid_x + 3, mid_y + 3,
+                fill="#28a745", outline="#155724",
+                tags="production_line"
+            )
+        
+        # Draw line label
+        if line.machines:
+            first_machine = line.machines[0]
+            self.canvas.create_text(
+                first_machine.x, first_machine.y - 40,
+                text=f"📋 {line.name}",
+                font=("Segoe UI", 10, "bold"),
+                fill="#007bff",
+                tags="production_line"
             )
     
     def on_click(self, event):

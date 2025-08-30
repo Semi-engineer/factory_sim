@@ -15,6 +15,9 @@ from models.job import Job
 from simulation.simulation_manager import SimulationManager
 from gui.factory_canvas import ModernFactoryCanvas
 from gui.charts_panel import ModernChartsPanel
+from gui.config_dialog import ConfigurationDialog
+from gui.production_line_dialog import ProductionLineDialog
+from config.simulation_config import SimulationConfig, ConfigPresets
 
 
 class ModernFactorySimulationGUI:
@@ -30,6 +33,7 @@ class ModernFactorySimulationGUI:
         # Initialize core components
         self.factory = Factory()
         self.sim_manager = SimulationManager(self.factory)
+        self.config = SimulationConfig()  # Default configuration
         
         # GUI state
         self.selected_machine = None
@@ -51,12 +55,12 @@ class ModernFactorySimulationGUI:
     def setup_default_machines(self):
         """สร้างเครื่องจักรตัวอย่าง"""
         machines = [
-            Machine("CNC-01", "CNC", 2.5, 10, 100, 150),
-            Machine("CNC-02", "CNC", 2.8, 12, 100, 300),
-            Machine("Lathe-01", "Lathe", 3.2, 15, 350, 150),
-            Machine("Drill-01", "Drill", 1.8, 8, 600, 150),
-            Machine("Assembly-01", "Assembly", 4.5, 25, 850, 150),
-            Machine("Inspection-01", "Inspection", 1.2, 5, 850, 300),
+            Machine("CNC-01", "CNC", 2.5, 10, 100, 150, self.config),
+            Machine("CNC-02", "CNC", 2.8, 12, 100, 300, self.config),
+            Machine("Lathe-01", "Lathe", 3.2, 15, 350, 150, self.config),
+            Machine("Drill-01", "Drill", 1.8, 8, 600, 150, self.config),
+            Machine("Assembly-01", "Assembly", 4.5, 25, 850, 150, self.config),
+            Machine("Inspection-01", "Inspection", 1.2, 5, 850, 300, self.config),
         ]
         
         for machine in machines:
@@ -86,6 +90,8 @@ class ModernFactorySimulationGUI:
         edit_menu.add_command(label="Add Machine...", command=self.add_machine_dialog, accelerator="Ctrl+M")
         edit_menu.add_command(label="Add Job...", command=self.add_job_dialog, accelerator="Ctrl+J")
         edit_menu.add_separator()
+        edit_menu.add_command(label="Configuration...", command=self.show_config_dialog, accelerator="Ctrl+P")
+        edit_menu.add_separator()
         edit_menu.add_command(label="Clear All Jobs", command=self.clear_all_jobs)
         edit_menu.add_command(label="Reset Statistics", command=self.reset_statistics)
         
@@ -96,6 +102,8 @@ class ModernFactorySimulationGUI:
         sim_menu.add_command(label="Pause", command=self.pause_simulation, accelerator="P")
         sim_menu.add_command(label="Resume", command=self.resume_simulation, accelerator="R")
         sim_menu.add_command(label="Stop", command=self.stop_simulation, accelerator="S")
+        sim_menu.add_separator()
+        sim_menu.add_command(label="🏭 Production Lines", command=self.show_production_line_dialog)
         sim_menu.add_separator()
         sim_menu.add_command(label="Speed 0.5x", command=lambda: self.set_speed(0.5))
         sim_menu.add_command(label="Speed 1x", command=lambda: self.set_speed(1.0))
@@ -141,6 +149,7 @@ class ModernFactorySimulationGUI:
         self.root.bind('<Control-e>', lambda e: self.export_data())
         self.root.bind('<Control-m>', lambda e: self.add_machine_dialog())
         self.root.bind('<Control-j>', lambda e: self.add_job_dialog())
+        self.root.bind('<Control-p>', lambda e: self.show_config_dialog())
         self.root.bind('<space>', lambda e: self.toggle_simulation())
         self.root.bind('<Key-p>', lambda e: self.pause_simulation())
         self.root.bind('<Key-r>', lambda e: self.resume_simulation())
@@ -887,6 +896,30 @@ Features:
 Built with Python, tkinter, and ttkbootstrap
         """
         messagebox.showinfo("About", about_text)
+    
+    def show_config_dialog(self):
+        """แสดง configuration dialog"""
+        def on_config_changed(new_config: SimulationConfig):
+            self.config = new_config
+            # Update all machines with new config
+            for machine in self.factory.machines.values():
+                machine.config = new_config
+            messagebox.showinfo("Success", "Configuration updated successfully")
+        
+        dialog = ConfigurationDialog(self.root, self.config, on_config_changed)
+        result = dialog.show()
+        
+        if result:
+            self.config = result
+    
+    def show_production_line_dialog(self):
+        """Show production line management dialog"""
+        def on_lines_changed():
+            self.canvas.update_display()
+            self.update_machine_table()
+        
+        dialog = ProductionLineDialog(self.root, self.factory, on_lines_changed)
+        dialog.show()
     
     def filter_machines(self, event=None):
         """กรองเครื่องจักร"""

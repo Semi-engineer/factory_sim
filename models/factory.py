@@ -5,13 +5,15 @@ import time
 from typing import Dict, List, Optional
 from models.job import Job
 from models.machine import Machine
+from models.production_line import ProductionLine
 
 
 class Factory:
-    """โรงงาน - Optimized with better data structures"""
+    """โรงงาน - Enhanced with Production Lines"""
     
     def __init__(self):
         self.machines: Dict[str, Machine] = {}
+        self.production_lines: Dict[str, ProductionLine] = {}
         self.jobs: List[Job] = []
         self.completed_jobs: List[Job] = []
         self.job_counter = 0
@@ -30,6 +32,47 @@ class Factory:
         self._machine_lookup[machine.name] = machine
         self._invalidate_cache()
         return True
+    
+    def add_production_line(self, production_line: ProductionLine) -> bool:
+        """เพิ่มสายการผลิต"""
+        if production_line.line_id in self.production_lines:
+            return False
+        
+        self.production_lines[production_line.line_id] = production_line
+        
+        # เพิ่มเครื่องจักรในสายการผลิตเข้าโรงงาน
+        for machine in production_line.machines:
+            if machine.name not in self.machines:
+                self.add_machine(machine)
+        
+        self._invalidate_cache()
+        return True
+    
+    def remove_production_line(self, line_id: str) -> bool:
+        """ลบสายการผลิต"""
+        if line_id in self.production_lines:
+            production_line = self.production_lines[line_id]
+            
+            # ลบเครื่องจักรออกจากโรงงาน (ถ้าไม่อยู่ในสายอื่น)
+            for machine in production_line.machines:
+                # ตรวจสอบว่าเครื่องจักรอยู่ในสายอื่นหรือไม่
+                in_other_line = any(
+                    machine in line.machines 
+                    for line_id_check, line in self.production_lines.items() 
+                    if line_id_check != line_id
+                )
+                
+                if not in_other_line:
+                    self.remove_machine(machine.name)
+            
+            del self.production_lines[line_id]
+            self._invalidate_cache()
+            return True
+        return False
+    
+    def get_production_line(self, line_id: str) -> Optional[ProductionLine]:
+        """ได้สายการผลิตตาม ID"""
+        return self.production_lines.get(line_id)
     
     def remove_machine(self, machine_name: str) -> bool:
         """ลบเครื่องจักร"""
@@ -62,13 +105,28 @@ class Factory:
         return job
     
     def route_job(self, job: Job) -> bool:
-        """จัดเส้นทางงาน - Optimized"""
+        """จัดเส้นทางงาน - Enhanced with Production Line support"""
         if job.current_step < len(job.required_machines):
             machine_name = job.required_machines[job.current_step]
             machine = self.get_machine(machine_name)
             
-            if machine and machine.add_job(job):
-                return True
+            if machine:
+                # ตรวจสอบว่าเครื่องจักรอยู่ในสายการผลิตหรือไม่
+                if hasattr(machine, 'production_line') and machine.production_line:
+                    production_line = self.get_production_line(machine.production_line)
+                    if production_line:
+                        return production_line.simulate_flow(job, time.time())
+                
+                # ถ้าไม่อยู่ในสายการผลิต ใช้วิธีเดิม
+                if machine.add_job(job):
+                    return True
+        return False
+    
+    def route_job_through_line(self, job: Job, line_id: str) -> bool:
+        """จัดเส้นทางงานผ่านสายการผลิตเฉพาะ"""
+        production_line = self.get_production_line(line_id)
+        if production_line:
+            return production_line.simulate_flow(job, time.time())
         return False
     
     def process_completed_job(self, job: Job):
@@ -140,16 +198,83 @@ class Factory:
                 if not machine.is_working and machine.get_queue_length() == 0]
     
     def get_factory_summary(self) -> dict:
-        """ได้สรุปสถานะโรงงาน"""
+        """ได้สรุปสถานะโรงงาน - Enhanced with Production Lines"""
         return {
             "total_machines": len(self.machines),
+            "total_production_lines": len(self.production_lines),
             "total_jobs": len(self.jobs),
             "completed_jobs": len(self.completed_jobs),
             "total_wip": self.get_total_wip(),
             "machine_types": list(set(machine.machine_type for machine in self.machines.values())),
             "bottlenecks": [machine.name for machine in self.get_bottleneck_machines()],
-            "idle_machines": [machine.name for machine in self.get_idle_machines()]
+            "idle_machines": [machine.name for machine in self.get_idle_machines()],
+            "production_lines_summary": {
+                line_id: line.get_line_summary() 
+                for line_id, line in self.production_lines.items()
+            }
         }
+    
+    def analyze_production_lines(self) -> dict:
+        """วิเคราะห์ประสิทธิภาพสายการผลิต"""
+        analysis = {
+            "total_lines": len(self.production_lines),
+            "line_efficiencies": {},
+            "bottleneck_analysis": {},
+            "balance_suggestions": {}
+        }
+        
+        for line_id, line in self.production_lines.items():
+            analysis["line_efficiencies"][line_id] = line.calculate_line_efficiency()
+            analysis["bottleneck_analysis"][line_id] = [m.name for m in line.analyze_bottleneck()]
+            analysis["balance_suggestions"][line_id] = line.balance_line()
+        
+        return analysis
+    
+    def get_production_line_throughput(self, time_period: float) -> dict:
+        """ได้ throughput ของแต่ละสายการผลิต"""
+        throughputs = {}
+        for line_id, line in self.production_lines.items():
+            throughputs[line_id] = line.calculate_throughput(time_period)
+        return throughputs
+    
+    def create_sample_production_line(self, line_id: str = "LINE-01") -> ProductionLine:
+        """สร้างสายการผลิตตัวอย่าง"""
+        from models.machine import Machine
+        
+        line = ProductionLine("Assembly Line 01", line_id)
+        
+        # สร้างเครื่องจักรสำหรับสายการผลิต
+        machines = [
+            Machine("PREP-01", "Preparation", 1.5, 5, config=getattr(self, 'config', None)),
+            Machine("CUT-01", "Cutting", 2.0, 8, config=getattr(self, 'config', None)),
+            Machine("DRILL-01", "Drilling", 1.8, 6, config=getattr(self, 'config', None)),
+            Machine("ASM-01", "Assembly", 3.0, 15, config=getattr(self, 'config', None)),
+            Machine("TEST-01", "Testing", 1.2, 3, config=getattr(self, 'config', None)),
+            Machine("PACK-01", "Packaging", 0.8, 2, config=getattr(self, 'config', None))
+        ]
+        
+        for machine in machines:
+            line.add_machine(machine)
+        
+        # ตั้งค่า layout แบบ horizontal
+        line.set_layout("horizontal", 50, 200, 180)
+        
+        # สร้าง production route
+        machine_names = [m.name for m in machines]
+        cycle_times = [m.base_time for m in machines]
+        setup_times = [m.setup_time for m in machines]
+        
+        line.create_production_route(
+            "Standard Product",
+            machine_names,
+            cycle_times,
+            setup_times
+        )
+        
+        # เพิ่มสายการผลิตเข้าโรงงาน
+        self.add_production_line(line)
+        
+        return line
     
     def clear_all_jobs(self):
         """ล้างงานทั้งหมด"""
