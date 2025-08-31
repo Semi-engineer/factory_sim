@@ -1,0 +1,641 @@
+================================================================================
+🏭 FACTORY SIMULATION - USER MANUAL
+================================================================================
+Version: 2.0 Modern Edition
+Date: August 31, 2025
+Developer: Semi-engineer
+
+================================================================================
+📖 TABLE OF CONTENTS
+================================================================================
+
+1. 🎯 INTRODUCTION
+2. 🚀 GETTING STARTED
+3. 🎮 USER INTERFACE GUIDE
+4. ⚙️ BASIC OPERATIONS
+5. 🏭 PRODUCTION LINE MANAGEMENT
+6. 📊 ANALYTICS & MONITORING
+7. 🔧 CONFIGURATION & SETTINGS
+8. 🎓 TUTORIALS & EXAMPLES
+9. ❓ TROUBLESHOOTING
+10. 🔗 KEYBOARD SHORTCUTS
+
+================================================================================
+1. 🎯 INTRODUCTION
+================================================================================
+
+Factory Simulation is a comprehensive real-time manufacturing simulation tool
+designed to help engineers, managers, and students understand and optimize
+factory operations. The software provides:
+
+✅ Real-time factory floor visualization
+✅ Production line management
+✅ Bottleneck analysis and optimization
+✅ Performance monitoring and analytics
+✅ Cost and quality tracking
+✅ Interactive machine configuration
+✅ Export capabilities for reports
+
+TARGET USERS:
+• Industrial Engineers
+• Production Managers
+• Manufacturing Students
+• Process Optimization Specialists
+• Factory Layout Designers
+
+================================================================================
+2. 🚀 GETTING STARTED
+================================================================================
+
+SYSTEM REQUIREMENTS:
+• Windows 10/11
+• Python 3.8 or higher
+• 4GB RAM minimum (8GB recommended)
+• 1GB free disk space
+
+INSTALLATION:
+1. Extract the factory_sim folder to your desired location
+2. Run the following commands in PowerShell:
+   cd e:\dev\GitHub\factory_sim
+   python -m venv .venv
+   .venv\Scripts\activate
+   pip install -r requirements.txt
+
+FIRST RUN:
+1. Launch: python main.py
+2. The application will open with sample machines pre-loaded
+3. Click "🔧 Sample Jobs" to add test jobs
+4. Press "▶️ Start" to begin simulation
+
+QUICK START TUTORIAL:
+1. Add sample jobs (🔧 Sample Jobs button)
+2. Start simulation (▶️ Start button)
+3. Observe machine activity and job flow
+4. Check Analytics tab for performance metrics
+5. Try Production Lines (Simulation → 🏭 Production Lines)
+
+================================================================================
+3. 🎮 USER INTERFACE GUIDE
+================================================================================
+
+MAIN WINDOW LAYOUT:
+┌─────────────────────────────────────────────────────────────┐
+│ Menu Bar: File | Edit | Simulation | Analysis | View | Help │
+├─────────────────────────────────────────────────────────────┤
+│ 🎮 Simulation Control Panel                                │
+│ ▶️Start ⏸️Pause ⏹️Stop 🔄Reset | Speed: [====] 1.0x      │
+│ Quick: 🏭Add Machine 📋Add Job 🔧Sample Jobs               │
+├─────────────────────────────────────────────────────────────┤
+│ 📊 Live Dashboard                                          │
+│ Time: 15.3 min | Jobs: 25 | Active: 4 | Efficiency: 78%   │
+├─────────────────────────────────────────────────────────────┤
+│ MAIN TABS:                                                  │
+│ [🏭 Factory Layout] [📊 Analytics] [⚙️ Machine Details]   │
+│                                                             │
+│ Tab Content Area                                            │
+│                                                             │
+├─────────────────────────────────────────────────────────────┤
+│ Status Bar: Ready | Progress: [████████████████████████]   │
+└─────────────────────────────────────────────────────────────┘
+
+TAB DESCRIPTIONS:
+
+🏭 FACTORY LAYOUT TAB:
+• Visual factory floor with machines
+• Real-time job flow visualization
+• Production line connections
+• Machine selection and info panel
+• Interactive machine placement
+
+📊 ANALYTICS TAB:
+• Real-time performance charts
+• Utilization graphs
+• Throughput monitoring
+• Quality metrics
+• Export capabilities
+
+⚙️ MACHINE DETAILS TAB:
+• Searchable machine list
+• Detailed machine information
+• Filter by type and status
+• Performance comparisons
+• Configuration access
+
+================================================================================
+4. ⚙️ BASIC OPERATIONS
+================================================================================
+
+STARTING A SIMULATION:
+1. Ensure machines have jobs in their queues
+2. Click "▶️ Start" in the control panel
+3. Observe real-time activity on factory floor
+4. Monitor performance in Live Dashboard
+
+ADDING JOBS:
+1. Click "📋 Add Job" button or Edit → Add Job... (Ctrl+J)
+2. Fill in job details:
+   • Job ID (auto-generated)
+   • Priority (Low/Normal/High/Urgent)
+   • Processing time (minutes)
+   • Quantity
+3. Select target machine from list
+4. Click "✅ Create Job"
+
+BATCH JOB CREATION:
+1. Use "📦 Create Batch" in Add Job dialog
+2. Specify number of similar jobs
+3. Jobs will be distributed across machines automatically
+
+ADDING MACHINES:
+1. Click "🏭 Add Machine" or Edit → Add Machine... (Ctrl+M)
+2. Configure machine properties:
+   • Name and type
+   • Processing capabilities
+   • Position on factory floor
+   • Cost parameters
+3. Click "Add Machine"
+
+SIMULATION CONTROL:
+• ▶️ Start: Begin simulation
+• ⏸️ Pause: Temporarily stop simulation
+• ⏹️ Stop: End simulation and show summary
+• 🔄 Reset: Clear all data and restart
+• Speed slider: Adjust simulation speed (0.1x to 5.0x)
+
+================================================================================
+5. 🏭 PRODUCTION LINE MANAGEMENT
+================================================================================
+
+ACCESSING PRODUCTION LINES:
+• Method 1: Simulation → 🏭 Production Lines
+• Method 2: Use keyboard shortcut (if configured)
+
+PRODUCTION LINE DIALOG FEATURES:
+
+📋 LINES LIST PANEL:
+• View all existing production lines
+• Line information summary
+• Create/Delete operations
+
+⚙️ CONFIGURATION TABS:
+
+1. 📝 BASIC INFO TAB:
+   • Line ID and Name
+   • Demand (pieces/hour)
+   • Conveyor speed settings
+
+2. 🔧 MACHINES TAB:
+   • Available machines list
+   • Current line machines (in sequence)
+   • Add/Remove machines
+   • Reorder sequence (Move Up/Down)
+
+3. 📐 LAYOUT TAB:
+   • Layout type: Horizontal, Vertical, L-shape, U-shape
+   • Start position (X, Y coordinates)
+   • Machine spacing
+   • Apply layout button
+
+4. 📊 ANALYSIS TAB:
+   • Bottleneck analysis
+   • Line balancing recommendations
+   • Performance metrics calculation
+   • Takt time analysis
+
+CREATING PRODUCTION LINES:
+
+STEP 1 - CREATE NEW LINE:
+1. Click "📝 New Line" button
+2. Line will be created with default ID (LINE-01, LINE-02, etc.)
+
+STEP 2 - ADD MACHINES:
+1. Switch to "🔧 Machines" tab
+2. Select machine from "Available Machines" list
+3. Click "➡️ Add" to add to production line
+4. Repeat for all required machines
+5. Use "⬆️ Move Up" / "⬇️ Move Down" to set sequence
+
+STEP 3 - CONFIGURE LAYOUT:
+1. Switch to "📐 Layout" tab
+2. Choose layout type (horizontal recommended for beginners)
+3. Set start position and spacing
+4. Click "🔄 Apply Layout"
+
+STEP 4 - ANALYZE PERFORMANCE:
+1. Switch to "📊 Analysis" tab
+2. Click "🔍 Analyze Bottlenecks" to find constraints
+3. Click "⚖️ Balance Line" for optimization suggestions
+4. Click "📈 Calculate Metrics" for performance data
+
+SAMPLE PRODUCTION LINE:
+• Use "📋 Sample Line" button for quick setup
+• Creates a typical manufacturing line: CNC → Lathe → Assembly → Inspection
+• Good for learning and testing
+
+LINE VISUALIZATION:
+• Production lines appear on factory floor with blue connecting arrows
+• Flow direction indicated by arrow heads
+• Line labels show above first machine
+• Real-time material flow indicators
+
+================================================================================
+6. 📊 ANALYTICS & MONITORING
+================================================================================
+
+LIVE DASHBOARD METRICS:
+• Time: Current simulation time
+• Jobs: Total jobs in system
+• Active: Number of working machines
+• Efficiency: Overall factory performance
+
+ANALYTICS TAB FEATURES:
+
+REAL-TIME CHARTS:
+1. Machine Utilization Chart:
+   • Shows percentage utilization for each machine
+   • Updates every 500ms
+   • Color-coded bars (green=good, yellow=moderate, red=overloaded)
+
+2. Throughput Graph:
+   • Jobs completed over time
+   • Trend line showing production rate
+   • Comparison against target
+
+3. Queue Length Monitor:
+   • WIP (Work in Process) for each machine
+   • Identifies bottlenecks visually
+   • Historical data tracking
+
+4. Quality Metrics:
+   • Defect rates by machine
+   • Overall quality trends
+   • Cost impact analysis
+
+PERFORMANCE ANALYSIS TOOLS:
+
+🔍 FIND BOTTLENECKS:
+• Automatically identifies constraint machines
+• Shows queue lengths and wait times
+• Provides improvement recommendations
+
+📊 PERFORMANCE REPORT:
+• Comprehensive factory analysis
+• Machine-by-machine breakdown
+• Efficiency calculations
+• Cost analysis
+
+💡 SUGGESTIONS:
+• AI-powered optimization recommendations
+• Based on current factory state
+• Actionable improvement steps
+
+📋 EXPORT REPORT:
+• Generate detailed PDF reports
+• Include charts and analysis
+• Suitable for management presentations
+
+METRICS DEFINITIONS:
+
+UTILIZATION:
+• Percentage of time machine is actively working
+• Formula: (Working Time / Total Time) × 100
+• Target: 70-85% (allows for flexibility)
+
+EFFICIENCY:
+• Overall machine performance including quality
+• Factors in defects, downtime, speed losses
+• Formula: (Good Output / Theoretical Maximum) × 100
+
+THROUGHPUT:
+• Rate of job completion
+• Measured in jobs/hour or pieces/hour
+• Key indicator of factory productivity
+
+OEE (Overall Equipment Effectiveness):
+• World-class metric combining:
+  - Availability (uptime percentage)
+  - Performance (speed efficiency)
+  - Quality (defect-free output)
+• Formula: Availability × Performance × Quality
+• World-class target: >85%
+
+================================================================================
+7. 🔧 CONFIGURATION & SETTINGS
+================================================================================
+
+ACCESSING CONFIGURATION:
+• Method 1: Edit → Configuration... (Ctrl+P)
+• Method 2: Click gear icon (if available)
+
+CONFIGURATION CATEGORIES:
+
+1. 🌐 GLOBAL PARAMETERS:
+   • Simulation speed multiplier
+   • Time units (minutes/hours)
+   • Currency settings
+   • Display preferences
+
+2. 💰 MATERIAL & COST:
+   • Raw material costs
+   • Processing costs per minute
+   • Setup costs
+   • Overhead rates
+
+3. 👥 LABOR:
+   • Operator wages
+   • Skill levels
+   • Shift patterns
+   • Training costs
+
+4. 🏭 MACHINE:
+   • Default processing times
+   • Breakdown probabilities
+   • Maintenance schedules
+   • Energy consumption
+
+5. 🎯 QUALITY:
+   • Target defect rates
+   • Inspection intervals
+   • Quality costs
+   • Rework parameters
+
+6. 📦 BUFFER & FLOW:
+   • Buffer sizes between machines
+   • Transfer times
+   • Batch sizes
+   • Flow rules
+
+PRESET CONFIGURATIONS:
+• Conservative: Low risk, stable operation
+• Balanced: Moderate performance and risk
+• Aggressive: High performance, higher risk
+• Custom: User-defined parameters
+
+SAVING CONFIGURATIONS:
+• Configurations save automatically
+• Export/Import capability for sharing
+• Version control for different scenarios
+
+MACHINE-SPECIFIC CONFIGURATION:
+1. Select machine on factory floor
+2. Click "🔧 Configure" in info panel
+3. Adjust parameters:
+   • Processing time
+   • Setup time
+   • Failure rate
+   • Operating costs
+   • Quality settings
+
+================================================================================
+8. 🎓 TUTORIALS & EXAMPLES
+================================================================================
+
+TUTORIAL 1: BASIC SIMULATION
+Objective: Learn basic simulation operations
+
+Steps:
+1. Launch application
+2. Click "🔧 Sample Jobs" to add test jobs
+3. Click "▶️ Start" to begin simulation
+4. Watch jobs move through machines
+5. Monitor Live Dashboard metrics
+6. Stop simulation and review results
+
+Expected Results:
+• Jobs flow through machines
+• Utilization increases
+• Some machines may become bottlenecks
+• Completed jobs accumulate
+
+TUTORIAL 2: BOTTLENECK ANALYSIS
+Objective: Identify and resolve bottlenecks
+
+Steps:
+1. Create uneven job distribution (more jobs to slower machines)
+2. Start simulation
+3. Go to Analytics tab
+4. Click "🔍 Find Bottlenecks"
+5. Review recommendations
+6. Add more machines or redistribute jobs
+7. Compare before/after performance
+
+Expected Learning:
+• Understanding bottleneck concept
+• Using analytics tools
+• Optimization strategies
+
+TUTORIAL 3: PRODUCTION LINE SETUP
+Objective: Create an efficient production line
+
+Steps:
+1. Access Simulation → 🏭 Production Lines
+2. Click "📝 New Line"
+3. Add machines in logical sequence:
+   CNC-01 → Lathe-01 → Assembly-01 → Inspection-01
+4. Set horizontal layout
+5. Configure demand (60 pieces/hour)
+6. Analyze line balance
+7. Run simulation with line routing
+
+Expected Results:
+• Smooth job flow through line
+• Balanced machine utilization
+• Meeting demand targets
+
+TUTORIAL 4: ADVANCED OPTIMIZATION
+Objective: Optimize complex factory
+
+Steps:
+1. Create multiple production lines
+2. Add variety of job types
+3. Use configuration presets
+4. Run extended simulation (30+ minutes)
+5. Export performance report
+6. Identify improvement opportunities
+7. Implement changes
+8. Measure improvement
+
+Advanced Concepts:
+• Multi-line coordination
+• Resource sharing
+• Capacity planning
+
+EXAMPLE SCENARIOS:
+
+SCENARIO A: HIGH-VOLUME AUTOMOTIVE PARTS
+• 8 CNC machines in parallel
+• High-speed assembly line
+• Strict quality requirements
+• Cost optimization focus
+
+SCENARIO B: CUSTOM ELECTRONICS ASSEMBLY
+• Flexible manufacturing cells
+• Batch processing
+• Quick changeovers
+• Quality over speed
+
+SCENARIO C: PHARMACEUTICAL PACKAGING
+• Clean room environment
+• Serialization requirements
+• Compliance tracking
+• Zero-defect tolerance
+
+================================================================================
+9. ❓ TROUBLESHOOTING
+================================================================================
+
+COMMON ISSUES AND SOLUTIONS:
+
+PROBLEM: Application won't start
+SOLUTION:
+• Check Python installation (python --version)
+• Verify virtual environment activation
+• Install required packages: pip install -r requirements.txt
+• Check Windows permissions
+
+PROBLEM: Simulation runs too slowly
+SOLUTION:
+• Reduce number of machines/jobs
+• Lower simulation speed
+• Close other applications
+• Check system resources
+
+PROBLEM: No jobs flowing
+SOLUTION:
+• Verify jobs are in machine queues
+• Check machine status (not broken)
+• Ensure simulation is started
+• Verify job routing
+
+PROBLEM: Charts not updating
+SOLUTION:
+• Check Analytics tab is visible
+• Restart simulation
+• Verify data collection is enabled
+• Update graphics drivers
+
+PROBLEM: Production lines not working
+SOLUTION:
+• Verify machines are added to line
+• Check machine sequence
+• Ensure line layout is applied
+• Verify routing configuration
+
+PROBLEM: Export functions failing
+SOLUTION:
+• Check folder permissions
+• Verify disk space
+• Update file paths
+• Check installed libraries
+
+PERFORMANCE OPTIMIZATION:
+• Limit simulation to <20 machines for smooth operation
+• Use batch job creation instead of individual jobs
+• Close unused tabs during long simulations
+• Save work frequently
+
+ERROR MESSAGES:
+
+"ModuleNotFoundError: No module named 'ttkbootstrap'"
+→ Run: pip install ttkbootstrap
+
+"Machine not found in factory"
+→ Restart application and reload data
+
+"Configuration file corrupted"
+→ Delete config file and restart (will use defaults)
+
+GETTING HELP:
+• Check this manual first
+• Review tutorial videos (if available)
+• Contact support: semi-engineer@example.com
+• GitHub issues: https://github.com/Semi-engineer/factory_sim
+
+================================================================================
+10. 🔗 KEYBOARD SHORTCUTS
+================================================================================
+
+FILE OPERATIONS:
+• Ctrl + N: New Simulation
+• Ctrl + O: Load Layout
+• Ctrl + S: Save Layout
+• Ctrl + E: Export Data
+• Alt + F4: Exit Application
+
+EDIT OPERATIONS:
+• Ctrl + M: Add Machine
+• Ctrl + J: Add Job
+• Ctrl + P: Configuration
+• Delete: Remove Selected
+
+SIMULATION CONTROL:
+• Space: Start/Pause Simulation
+• S: Stop Simulation
+• R: Resume Simulation
+• P: Pause Simulation
+• Plus (+): Increase Speed
+• Minus (-): Decrease Speed
+
+VIEW OPERATIONS:
+• F1: Factory Layout Tab
+• F2: Analytics Tab
+• F3: Machine Details Tab
+• F5: Refresh Display
+• Ctrl + Plus: Zoom In
+• Ctrl + Minus: Zoom Out
+• Ctrl + 0: Reset Zoom
+
+NAVIGATION:
+• Tab: Next Control
+• Shift + Tab: Previous Control
+• Enter: Confirm Action
+• Escape: Cancel Dialog
+
+ANALYSIS:
+• Ctrl + B: Find Bottlenecks
+• Ctrl + R: Performance Report
+• Ctrl + U: Machine Utilization
+• F9: Production Lines Dialog
+
+CUSTOM SHORTCUTS:
+Users can modify shortcuts in the configuration file.
+
+================================================================================
+🎯 CONCLUSION
+================================================================================
+
+This Factory Simulation tool provides a comprehensive platform for:
+• Learning manufacturing concepts
+• Optimizing factory layouts
+• Analyzing production performance
+• Training operators and engineers
+• Testing new processes
+
+The modern interface combines ease of use with powerful analytics,
+making it suitable for both educational and professional applications.
+
+For best results:
+✅ Start with tutorials
+✅ Use sample data for learning
+✅ Experiment with different scenarios
+✅ Focus on bottleneck identification
+✅ Regular monitoring and optimization
+
+Remember: Great factories are built through continuous improvement!
+
+================================================================================
+📞 SUPPORT INFORMATION
+================================================================================
+
+Version: 2.0 Modern Edition
+Last Updated: August 31, 2025
+Documentation: manual.txt
+Developer: Semi-engineer
+Repository: https://github.com/Semi-engineer/factory_sim
+
+For technical support, feature requests, or bug reports,
+please contact through the GitHub repository.
+
+Happy Simulating! 🏭✨
+
+================================================================================
